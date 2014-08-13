@@ -1,4 +1,14 @@
 //Example Code
+
+//Add styles
+addStyles();
+//Add header
+addHeader();
+//Add content
+addContent();
+//Add footer
+addFooter();
+
 function addStyles() {
   function createStyles() {
     return cel({
@@ -43,7 +53,7 @@ function addContent() {
                       text = text + newChar;
                     }
                     return text;
-                  }("Lorem ipsum...","abcdefghijklmnopqrstuvwzyz .,;".split(''), 5000)
+                  }("Lorem ipsum...HTML element generation with JS...","abcdefghijklmnopqrstuvwzyz .,;".split(''), 5000)
     });
   }
 
@@ -64,14 +74,6 @@ function addFooter() {
   addToDocument(footer_el);
 }
 
-//Add styles
-addStyles();
-//Add header
-addHeader();
-//Add content
-addContent();
-//Add footer
-addFooter();
 
 /* --------
     FUNCTIONS
