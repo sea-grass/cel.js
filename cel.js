@@ -23,8 +23,7 @@ function addHeader() {
                       }),
                   cel({ id: "brand",
                         type: "h1",
-                        innerHTML: "Kittens",
-                        children: cel({type:"a",innerHTML:"Kittens",attrs:{"src":"https://github.com/sea-grass/cel.js"}})
+                        children: cel({type:"a",innerHTML:"Kittens",attrs:{"href":"https://github.com/sea-grass/cel.js"}})
                       })]
     });
   }
