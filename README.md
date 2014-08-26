@@ -73,4 +73,4 @@ Basically a way to sync a cel with a `<style>` element
 
 Basically a way to specify everything, or anything, all at once
 
-  var clickableBox = cel({innerHTML: "<p>I am a box.</[>"}, {}, {click: function(e){e.target.innerHTML+="<p>Clicked!</p>"}})
+    var clickableBox = cel({innerHTML: "<p>I am a box.</[>"}, {}, {click:     function(e){e.target.innerHTML+="<p>Clicked!</p>"}})
