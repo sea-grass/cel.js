@@ -1,4 +1,15 @@
+# NOTE
+
+  I have been making modifications to this without a discrete set of documentation. Including using this in conjunction with jsdomto support node.js pre-rendering of the dom with cel.js. So, as of now, removing the `require` and `exports` will probably allow you to use it clientside, until I clarify my goals.
+
+#What is it?
+
 Simple js html element creation library
+
+Where?
+
+  - Clientside (Browser)
+  - Node.js (with jsdom & http packages)
 
 # Basics of a "cel"
 

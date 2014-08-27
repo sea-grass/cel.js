@@ -1,3 +1,5 @@
+var document = require('jsdom').jsdom('<html><head></head><body></body></html>');
+/*
 //Example Code
 
 //Add styles
@@ -73,6 +75,7 @@ function addFooter() {
   var footer_el = createFooter();
   addToDocument(footer_el);
 }
+*/
 
 
 /* --------
@@ -135,3 +138,6 @@ function addToContainer(el, container) {
 function addToDocument(el) {
   addToContainer(el, document.body);
 }
+
+exports.cel = cel;
+exports.document = document;
