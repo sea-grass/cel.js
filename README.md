@@ -43,43 +43,39 @@ It woul excel in a highly dynamic environment (e.g. a Single Page Application), 
 
 See `example` for a full example of the usage of Cel.js.
 
-## Cel.js
+## Some code snippets
 
-  function Cel(options){}
-  /*  options.type -- default "div"
-  */
+```javascript
+/* Create a div */
+var newDiv = new Cel({ innerText: "Hello" + " world!"});
 
-## Create a div
-    //
-    var newDiv = new Cel({ innerText: "Hello" + " world!"});
+/* Create an img */
+var newImg = new Cel({
+  type: "img",
+  attrs: {
+    src: "//placekitten.com/100/100"
+  }
+});
 
-## Create an img
-
-  var newImg = new Cel({
-    type: "img",
-    attrs: {
-      src: "//placekitten.com/100/100"
-    }
-  });
-  
-## Create a header
-  var headerOptions = {
-    "type": "div",
-    "id": "header",
-    "classes": ["fixed-top", "full-width"],
-    "children": [
-      new Cel({
-        "type": "img",
-        "id": "logo",
-        "attrs": {
-          "src": "//placekitten.com/g/64/64"
-        }
-      }),
-      new Cel({
-        "type": "h1",
-        "id": "brand",
-        "innerText": "Kittens"
-      })
-    ]
-  };
-  var newHeader = new Cel(headerOptions);
+/* Create a header */
+var headerOptions = {
+  "type": "div",
+  "id": "header",
+  "classes": ["fixed-top", "full-width"],
+  "children": [
+    new Cel({
+      "type": "img",
+      "id": "logo",
+      "attrs": {
+        "src": "//placekitten.com/g/64/64"
+      }
+    }),
+    new Cel({
+      "type": "h1",
+      "id": "brand",
+      "innerText": "Kittens"
+    })
+  ]
+};
+var newHeader = new Cel(headerOptions);
+```
