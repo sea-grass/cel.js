@@ -1,87 +1,85 @@
-# NOTE
+# Cel.js
 
-  I have been making modifications to this without a discrete set of documentation. Including using this in conjunction with jsdomto support node.js pre-rendering of the dom with cel.js. So, as of now, removing the `require` and `exports` will probably allow you to use it clientside, until I clarify my goals.
+Cel.js is a simple HTML Element creation library written in JavaScript.
 
-#What is it?
+It allows the developer to specify the structure of an HTML element including its various attributes in a JSON object, and pass that to the Cel constructor to create their HTML element.
 
-Simple js html element creation library
+It turns code like:
 
-Where?
+```javascript
+var myElement = document.createElement("div");
+myElement.id = "myElement";
+myElement.classList.add("these", "are", "my", "classes");
+myElement.style.position = "absolute";
+myElement.style.width = "480px";
+myElement.style.margin = "0 auto";
+myElement.style.color = "magenta";
+```
 
-  - Clientside (Browser)
-  - Node.js (with jsdom & http packages)
+into:
 
-# Basics of a "cel"
+```javascript
+var myElement = new Cel({
+  type: "div",
+  id: "myElement",
+  classes: ["these", "are", "my", "classes"],
+  style: {
+    position: "absolute",
+    width: "480px",
+    margin: "0 auto",
+    color: "magenta"
+  }
+});
+```
 
-Basically a dom collection of elements, specifiable by json.
-## Create a div:
+I admit that it does not seem like a "space saver" -- in fact it seems like the Cel.js version has more lines than the sans-Cel.js version.
+This is the cost of expressiveness: the ability to specify your HTML element with one function call and a declarative syntax.
 
-    //Check the .js file for the defaults to cel()
-    var newDiv = cel();
+This could be used if you are hesitant add jQuery to your project just for the ability to declare HTML elements in Javascript.
 
-## Create an img:
+It woul excel in a highly dynamic environment (e.g. a Single Page Application), where the UI could be declared using Cel options.
 
-    var myImg = cel({ type: "img",
-                      attrs: {
-                              src: "http://placekitten.com/100/100"
-                      }
-                });
+# Some examples
 
-## Create a header:
+See `example` for a full example of the usage of Cel.js.
 
-    var myHeaderOptions = {
-      type: "div",
-      id: "header",
-      classes: ["fixed-top", "full-width"],
-      children: [ cel({ id: "logo",
-                        type: "img",
-                        attrs:{"src":"http://placekitten.com/g/64/64"}
-                      }),
-                  cel({ id: "brand",
-                        type: "h1",
-                        innerHTML: "Kittens"
-                      })]
-    };
-    var myHeader = cel(myHeaderOptions);
+## Cel.js
 
-# Associated stylesheets
+  function Cel(options){}
+  /*  options.type -- default "div"
+  */
 
-Basically a way to sync a cel with a `<style>` element
+## Create a div
+    //
+    var newDiv = new Cel({ innerText: "Hello" + " world!"});
 
-    var myHeaderOptions = {
-      type: "div",
-      id: "header",
-      classes: ["fixed-top", "full-width"],
-      children: [ cel({ id: "logo",
-                        type: "img",
-                        attrs:{"src":"http://placekitten.com/g/64/64"}
-                      }),
-                  cel({ id: "brand",
-                        type: "h1",
-                        innerHTML: "Kittens"
-                      })]
-    };
-    var myHeaderStylesheet =  cel({
-                                type: "style",
-                                innerHTML: "#header { position: absolute; top: 0; left: 0; margin-bottom: 60px; height: 60px; background: #aaa }"
-                              });
-    //myHeaderStylesheet doesn't need to be added to the document manually.
-    //It is done by the Cel.addToDocument(myCel), and so is also
-    //removed by Cel.removeFromDocument(myCel).
-    //TODO: Make cel -> Cel, in addition to a factory pattern
-    //TODO: Add {addTo,removeFrom}Document(myCdl) functions
-    var myHeader = cel(myHeaderOptions, myHeaderStylesheet)
-    myHeader.stylesheet.background = "blue";
-    myHeader.stylesheet.child("#logo").borderRadius = "30px 30px";
-    //TODO: Add stylesheet object to creations from Cel
-    //TODO: Add child(selector) method to myHeader.stylesheet to return an object that mirrors all of the styles of the matching node.
-    //e.g. So, this hear would modify the innerHTML of myHeaderStylesheet and add a rule about `#header#logo` to create a rounded image.
-    //and so, changing the very same borderRadius tp another value, or simply nothing, then would have its change reflacted in
-    //myHeader's synchronized stylesheet
-    Cel.addToDocument(myHeader);
+## Create an img
 
-# Specifying event listeners
-
-Basically a way to specify everything, or anything, all at once
-
-    var clickableBox = cel({innerHTML: "<p>I am a box.</[>"}, {}, {click:     function(e){e.target.innerHTML+="<p>Clicked!</p>"}})
+  var newImg = new Cel({
+    type: "img",
+    attrs: {
+      src: "//placekitten.com/100/100"
+    }
+  });
+  
+## Create a header
+  var headerOptions = {
+    "type": "div",
+    "id": "header",
+    "classes": ["fixed-top", "full-width"],
+    "children": [
+      new Cel({
+        "type": "img",
+        "id": "logo",
+        "attrs": {
+          "src": "//placekitten.com/g/64/64"
+        }
+      }),
+      new Cel({
+        "type": "h1",
+        "id": "brand",
+        "innerText": "Kittens"
+      })
+    ]
+  };
+  var newHeader = new Cel(headerOptions);
