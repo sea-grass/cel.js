@@ -49,7 +49,20 @@
     /* appends the specified children to the element, if any */
     for (i = 0; i < options["children"].length; i++) {
       //TODO: Check if another cel properties object or html element
-      el.appendChild(options["children"][i]);
+      var def = options["children"][i];
+      var type = Object.prototype.toString.call(def);
+      var child = null;
+      if (type.indexOf("object Object") !== -1) {
+        //Create the cel from the cel definition
+        child = new Cel(def);
+      } else if (type.indexOf("object HTML") !== -1) {
+        //Already an HTML element
+        //TODO: Is this really a good enough test?
+        child = def;
+      }
+      if (child !== null) {
+        el.appendChild(child);
+      }
     }
     /* sets the supplied style rules, if any */
     for (rule in options["style"]) {
