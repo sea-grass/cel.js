@@ -14,7 +14,8 @@
       "innerHTML": "",
       "innerText": "",
       "children": [],
-      "style": {}
+      "style": {},
+      "on": {}
     };
     if (!options) options = {};
     /* set all of the fields in options */
@@ -68,6 +69,12 @@
     for (rule in options["style"]) {
       if (options["style"].hasOwnProperty(rule)) {
         el["style"][rule] = options["style"][rule];
+      }
+    }
+    /* sets up the listeners specified in options, if any */
+    for (var eventName in options["on"]) {
+      if (options["on"].hasOwnProperty(eventName)) {
+        el.addEventListener(eventName, options["on"][eventName]);
       }
     }
     /* returns the newly constructed element */
