@@ -14,7 +14,8 @@
       "innerHTML": "",
       "innerText": "",
       "children": [],
-      "style": {}
+      "style": {},
+      "on": {}
     };
     if (!options) options = {};
     /* set all of the fields in options */
@@ -49,12 +50,31 @@
     /* appends the specified children to the element, if any */
     for (i = 0; i < options["children"].length; i++) {
       //TODO: Check if another cel properties object or html element
-      el.appendChild(options["children"][i]);
+      var def = options["children"][i];
+      var type = Object.prototype.toString.call(def);
+      var child = null;
+      if (type.indexOf("object Object") !== -1) {
+        //Create the cel from the cel definition
+        child = new Cel(def);
+      } else if (type.indexOf("object HTML") !== -1) {
+        //Already an HTML element
+        //TODO: Is this really a good enough test?
+        child = def;
+      }
+      if (child !== null) {
+        el.appendChild(child);
+      }
     }
     /* sets the supplied style rules, if any */
     for (rule in options["style"]) {
       if (options["style"].hasOwnProperty(rule)) {
         el["style"][rule] = options["style"][rule];
+      }
+    }
+    /* sets up the listeners specified in options, if any */
+    for (var eventName in options["on"]) {
+      if (options["on"].hasOwnProperty(eventName)) {
+        el.addEventListener(eventName, options["on"][eventName]);
       }
     }
     /* returns the newly constructed element */
