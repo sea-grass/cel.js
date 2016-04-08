@@ -1,3 +1,12 @@
+/**
+ * Cel.js
+ * Author: Chris Grass
+ * Date: April 8, 2016
+ * Version: 0.0.1
+ *
+ * Cel - Create ELement
+ * See: https://github.com/sea-grass/cel.js for usage
+ */
 (function() {
   "use strict";
   var Cel = function Cel(options){ return Cel.create(options); };
