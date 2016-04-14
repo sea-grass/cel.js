@@ -12,6 +12,7 @@ function Cel(options) {
 }
 Cel.create = create;
 Cel.createStyle = createStyle;
+Cel.createRaw = createRaw;
 
 module.exports = Cel;
 
@@ -68,7 +69,7 @@ function create(options) {
     var child = null;
     if (type.indexOf("object Object") !== -1) {
       //Create the cel from the cel definition
-      child = new Cel(def);
+      child = Cel(def);
     } else if (type.indexOf("object HTML") !== -1) {
       //Already an HTML element
       //TODO: Is this really a good enough test?
@@ -106,7 +107,7 @@ function createStyle(options) {
   if (basic_options["children"]) delete basic_options["children"];
   basic_options["type"] = "style";
 
-  el = new Cel(basic_options);
+  el = Cel(basic_options);
 
   options["rules"] = options["rules"] || {};
 
@@ -124,5 +125,116 @@ function createStyle(options) {
 
   el.innerText = styleText;
 
+  return el;
+}
+
+function createRaw(options) {
+  var option, el;
+  var i;
+  var attr;
+  var generic_options = {
+    "type": "div",
+    "id": "",
+    "classes": [],
+    "attrs": {},
+    "innerHTML": "",
+    "innerText": "",
+    "children": [],
+    "style": {},
+    "on": {}
+  };
+  if (!options) options = {};
+  /* set all of the fields in options */
+  for (option in generic_options) {
+    if (generic_options.hasOwnProperty(option)) {
+      options[option] = options[option] || generic_options[option];
+    }
+  }
+  /* create the element with the specified or default (div) type */
+
+  /**
+   *  Open element opening tag
+   **/
+  el = "";
+  el += "<" + options.type;
+  /**
+   *  Assign special attributes
+   **/
+  if (options.id !== '') {
+    el += ' id="'+options.id+'"';
+  }
+  el += ' class="';
+  for (i = 0; i < options.classes.length; i++) {
+    el += options.classes[i] + ' ';
+  }
+  el += '"';
+  /* sets the supplied style rules, if any */
+  el += ' style="';
+  for (var rule in options.style) {
+    if (options.style.hasOwnProperty(rule)) {
+      el += rule + ': ' + options.style[rule] + ';';
+    }
+  }
+  el += '"';
+  /**
+   *  Assign all other attributes
+   **/
+  for (attr in options.attrs) {
+    if (options.attrs.hasOwnProperty(attr)) {
+      // e.g. <div contenteditable="contenteditable"> == <div contenteditable>, right?
+      if (attr === options.attrs[attr]) {
+        el += ' '+attr;
+      } else {
+        el += ' '+attr+'="'+options.attrs[attr]+'"';
+      }
+
+    }
+  }
+  /**
+   * Close the opening tag
+   **/
+  el += '>';
+  
+
+  /* set the inner content of the element, if any specified */
+  if (options.innerText !== '') {
+    el += options.innerText;
+  }
+  if (options.innerHTML !== '') {
+    el += options.innerHTML;
+  }
+  /* appends the specified children to the element, if any */
+  for (i = 0; i < options.children.length; i++) {
+    var def = options.children[i];
+    var type = Object.prototype.toString.call(def);
+    var child = null;
+    if (type.indexOf("object Object") !== -1) {
+      //Create the cel from the cel definition
+      //here's where it gets recursive...
+      child = createRaw(def);
+    } else if (type.indexOf("object String") !== -1) {
+      //Already an HTML element
+      child = def;
+    }
+    if (child !== null) {
+      el += child;
+    }
+  }
+
+  //TODO: Setup event listeners for the new Cel
+  /*
+  for (var eventName in options["on"]) {
+    if (options["on"].hasOwnProperty(eventName)) {
+      el.addEventListener(eventName, options["on"][eventName]);
+    }
+  }
+  */
+  /**
+   * Element closing tag
+   * TODO: Determine self-closing tag or not
+   **/
+  el += '</' + options.type + '>';
+
+  /* returns the newly constructed element */
   return el;
 }
