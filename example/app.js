@@ -1,13 +1,18 @@
 /* Cel.js/example/app.js 
-  This is an example app demonstrating the power/expressiveness with Cel.js.
+  This is an example app demonstrating the power/expressiveness with cel.js.
   It creates only four top-level elements: style, header, content, and footer
   
-  Some features of Cel.js that it shows off:
+  Some features of cel.js that it shows off:
   - Create stylesheets with `Cel.createStyle({rules:{selector:...}})`
   - Add child elements to a new Cel with `new Cel({children:[...]})`
   - Create elements with dynamic content with `new Cel({innerHTML: generateLoremIpsum()})`
 */
-var style = document.head.appendChild(new Cel.createStyle({
+var style,
+    header,
+    content,
+    footer;
+
+style = new cel.createStyle({
   "type": "style",
   "id": "header_styles",
   "rules": {
@@ -40,38 +45,49 @@ var style = document.head.appendChild(new Cel.createStyle({
       "background-color": "rgba(255, 255, 255, 0.9)"
     }
   }
-}));
+});
 
-var header = document.body.appendChild(new Cel({
-  "type": "div",
+header = cel({
   "id": "header",
   "classes": ["fixed-top", "full-width"],
   "children": [
-    new Cel({
+    {
       "type": "img",
       "id": "logo",
       "attrs": {
         "src": "//placekitten.com/g/64/64"
       }
-    }),
-    new Cel({
+    },
+    {
       "type": "h1",
       "id": "brand",
       "innerText": "Kittens"
-    })
+    }
   ]
-}));
+});
 
-var content = document.body.appendChild(new Cel({
+content = cel({
   "id": "content",
   "innerHTML": generateLoremIpsum(5000)
-}));
+});
 
-var footer = document.body.appendChild(new Cel({
+footer = cel({
   "id": "footer",
   "classes": ["fixed-bottom", "full-width"],
-  "innerHTML": "<a href='//github.com/sea-grass'>github/sea-grass</a> - #Celjs2015"
-}));
+  "children": [
+    {
+      "type": "a",
+      "attrs": {
+        "href": "//github.com/sea-grass"
+      },
+      "innerText": "github/sea-grass"
+    },
+    {
+      "innerText": "#celjs2015"
+    }
+  ]
+});
+
 /* Will generate (gibberish) text to fit the numChars specified */
 function generateLoremIpsum(numChars) {
   var lipsum = "";
@@ -121,3 +137,24 @@ function generateLoremIpsum(numChars) {
   // make sure to trim the string so the lipsum is as requested
   return lipsum.substr(0, numChars);
 }
+
+
+document.head.appendChild(style);
+// I don't like writing document.body.appendChild over and over...
+[
+  header,
+  content,
+  footer,
+].map(function (el) {
+  document.body.appendChild(el);
+});
+
+
+/*
+ * This is here just for fun
+ */
+/*
+setInterval(function() {
+  content.innerHTML = generateLoremIpsum(5000);
+}, 1000/60);
+*/
